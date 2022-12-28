@@ -1,0 +1,128 @@
+16 bit computer
+memoryspace is 268435455 shorts long or 0xfffffff or a 28-bit address
+Interrupt vector table is seperate
+16 GPRs: r0-r15
+8 SPRs: s0-s7
+s0  PC  Program Counter
+s1  SP  Stack Pointer
+s2  FP  frame Pointer
+s3  LR  Link Register
+s4  IR  Interrupt Register
+s5  CR  Count Register, increments when activated
+s6  TR  Target Register, target number for Counter
+s7  FR  Flag Register
+        znct isxx xxxx xxxx xppp pppp pppp
+
+instr = reg1 reg2 reg3 reg4
+triple register instructions
+x0          Escape to nibble2 opcodes
+x1  llb     Load Low Byte of instruction into register specified in second nibble
+x2  lod     LOaD indirect to reg[nibble2] from address (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x3  str     SToRe indirect from reg[nibble2] to address (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x4  rdj     Reletive Direct Jump: +/- 2047 address locations
+x5  add     reg[r2] = reg[r3] + reg[r4]
+x6  sub     reg[r2] = reg[r3] - reg[r4]
+x7  mul     reg[r2] = reg[r3] * reg[r4]
+x8  div     reg[r2] = reg[r3] / reg[r4]
+x9  mod     reg[r2] = reg[r3] % reg[r4]
+xa  
+xb  
+xc  
+xd  
+xe  
+xf  
+
+double register instructions
+x00         Escape to nibble3 opcodes
+x01 jmp     indirect JuMP to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x02 beq     Branch if EQual (z = 1) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x03 bge     Branch if Greater than or Equal (n = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x04 ble     Branch if Less than or equal (n = 1 | z = 1) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x05 bne     Branch if Not EQual (z = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x06 bgt     Branch if Greater Than (n = 0 & z = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x07 blt     Branch if Less Than (n = 1, z = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x08 mov     reg[nibble3] = reg[nibble4]
+x09 and     reg[r3] = reg[r3] & reg[r4]
+x0a nnd     reg[r3] = ~(reg[r3] & reg[r4]) (NAND)
+x0b orr     reg[r3] = reg[r3] | reg[r4] (OR)
+x0c nor     reg[r3] = (reg[r3] | reg[r4])
+x0d xor     reg[r3] = reg[r3] XOR reg[r4]
+x0e xnr     reg[r3] = reg[r3] XNOR reg[r4] (XNOR)
+x0f 
+
+single register instructions
+x000    Escape to no register opcodes
+x001    swp     swap bytes in register 
+x002    inc     increment
+x003    dec     decrement
+x004    ssl     Signed Shift Left
+x005    ssr     Signed Shift Right
+x006    rol     ROtate Left
+x007    srl     Signed Rotate Left
+x008    ror     Rotate Right
+x009    srr     signed rotate right
+x00a    not     invert reg[nibble3] = ~reg[nibble4]
+x00b    psh     push reg[nibble4] to address in SP and dec SP
+x00c    pop     pop mem[SP] to reg[nibble4] and inc SP
+x00d    
+x00e    
+x00f    
+
+
+
+x0000
+x0001   ret     return from function 
+x0002   nop     PC++
+x0003   pvg     enter privileged mode (can directly modify SPRs)
+x0004
+x0005
+x0006
+x0007
+x0008
+x0009
+x000a
+x000b
+x000c
+x000d
+x000e
+x000f
+
+________________________________________________________________________________
+
+x0          Escape to nibble2 opcodes
+x1  llb     Load Low Byte of instruction into register specified in second nibble
+x2  lhb     Load High Byte of instruction into register specified in second nibble
+x3  lod     LOaD indirect to reg[nibble2] from address (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x4  str     SToRe indirect from reg[nibble2] to address (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x5  add     reg[r2] = reg[r3] + reg[r4]
+x6  sub     reg[r2] = reg[r3] - reg[r4]
+x7  mul     reg[r2] = reg[r3] * reg[r4]
+x8  div     reg[r2] = reg[r3] / reg[r4]
+x9  mod     reg[r2] = reg[r3] % reg[r4]
+xa  and     reg[r2] = reg[r3] & reg[r4]
+xb  nnd     reg[r2] = ~(reg[r3] & reg[r4]) (NAND)
+xc  orr     reg[r2] = reg[r3] | reg[r4] (OR)
+xd  nor     reg[r2] = (reg[r3] | reg[r4])
+xe  xor     reg[r2] = reg[r3] XOR reg[r4] 
+xf  xnr     reg[r2] = reg[r3] XNOR reg[r4] (XNOR)
+
+
+x00         Escape to nibble3 opcodes
+x01 jmp     indirect JuMP to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x02 jrp     Jump Reletive Positive: PC = PC + lower-byte    (check for overflow)
+x03 jrn     Jump Reletive Negetive: PC = PC - lower-byte    (check for underflow)
+x04 beq     Branch if EQual (z = 1) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x05 bne     Branch if Not EQual (z = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x06 bge     Branch if Greater than or Equal (n = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x07 bgt     Branch if Greater Than (n = 0 & z = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x08 ble     Branch if Less than or equal (n = 1 | z = 1) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x09 blt     Branch if Less Than (n = 1, z = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x0a mov     reg[nibble3] = reg[nibble4]
+x0b swp     swap reg[nibble3] and reg[nibble4]
+x0c not     invert reg[nibble3] = ~reg[nibble4]
+x0d 
+x0e
+x0f
+
+
+swp     swap reg[nibble3] and reg[nibble4]

@@ -1,0 +1,9 @@
+Register 1 opcodes (r1):
+-   x0xxx designates to jump to the second level of opcodes
+-   llb and swp are used to set a register to any value in range 0-65535
+-   lod and str are the indirect load and store from/to main memory functions.
+-   rjp and rjn are reletive jumps in the positive and negetive direction
+        respectivly. 
+
+
+
