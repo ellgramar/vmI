@@ -1,21 +1,22 @@
 16 bit computer
 memoryspace is 268435455 shorts long or 0xfffffff or a 28-bit address
-Interrupt vector table is seperate
+Interrupt vector table is 
 16 GPRs: r0-r15
 8 SPRs: s0-s7
 s0  PC  Program Counter
 s1  SP  Stack Pointer
 s2  FP  frame Pointer
 s3  LR  Link Register
-s4  IR  Interrupt Register
-s5  CR  Count Register, increments when activated
-s6  TR  Target Register, target number for Counter
+s4  CR  Count Register, increments when activated
+s5  TR  Target Register, target number for Counter
+s6  ER  Extension Register
+        xxxx e0e0 e0e0 e0e0 e1e1 e1e1 e1e1
 s7  FR  Flag Register
-        znct isxx xxxx xxxx xppp pppp pppp
+        znct s012 3456 7xxx xsss ssss ssss
 
-instr = reg1 reg2 reg3 reg4
+instr = r1r1 r2r2 r3r3 r4r4
 triple register instructions
-x0          Escape to nibble2 opcodes
+x0          Escape to double register instruction set A
 x1  llb     Load Low Byte of instruction into register specified in second nibble
 x2  lod     LOaD indirect to reg[nibble2] from address (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
 x3  str     SToRe indirect from reg[nibble2] to address (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
@@ -25,14 +26,14 @@ x6  sub     reg[r2] = reg[r3] - reg[r4]
 x7  mul     reg[r2] = reg[r3] * reg[r4]
 x8  div     reg[r2] = reg[r3] / reg[r4]
 x9  mod     reg[r2] = reg[r3] % reg[r4]
-xa  
-xb  
+xa  ex0     set e0 bits in Extension Register (ER) based on lower 12 bits in instruction
+xb  ex1     set e1 bits in Extension Register (ER) based on lower 12 bits in instruction
 xc  
 xd  
 xe  
-xf  
+xf  double register instruction set B
 
-double register instructions
+double register instruction set A
 x00         Escape to nibble3 opcodes
 x01 jmp     indirect JuMP to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
 x02 beq     Branch if EQual (z = 1) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
@@ -50,6 +51,24 @@ x0d xor     reg[r3] = reg[r3] XOR reg[r4]
 x0e xnr     reg[r3] = reg[r3] XNOR reg[r4] (XNOR)
 x0f 
 
+double register instruction set B
+xf0 si0     Screen In from lower 11 bits of ER's e0
+xf1 si1     Screen In from lower 11 bits of ER's e1
+xf2 so0     Screen Out to address in e0, lower 11 bits of e0
+xf3 so1     Screen Out to address in e1, lower 11 bits of e1
+xf4 ien     Interrupt Enable lower 8 bits correspond to interrupts 0-7
+xf5
+xf6
+xf7
+xf8
+xf9
+xfa
+xfb
+xfc
+xfd
+xfe
+xff
+
 single register instructions
 x000    Escape to no register opcodes
 x001    swp     swap bytes in register 
@@ -61,19 +80,20 @@ x006    rol     ROtate Left
 x007    srl     Signed Rotate Left
 x008    ror     Rotate Right
 x009    srr     signed rotate right
-x00a    not     invert reg[nibble3] = ~reg[nibble4]
-x00b    psh     push reg[nibble4] to address in SP and dec SP
-x00c    pop     pop mem[SP] to reg[nibble4] and inc SP
-x00d    
-x00e    
-x00f    
+x00a    psh     push reg[nibble4] to address in SP and dec SP
+x00b    pop     pop mem[SP] to reg[nibble4] and inc SP
+x00c    tot     Terminal OuT, ascii(reg[r4]) to position in s7 specified by S, 12th bit of s7 = 1
+x00d    rti     Read Terminal In, reg[r4] = char, lower 11 bits of s7 are position, 12th bit of s7 = 0
+x00e    not     invert reg[nibble3] = ~reg[nibble4]
+x00f    ien     interrupt enable 
+
 
 
 
 x0000
-x0001   ret     return from function 
+x0001   ret     return from function, uses link register
 x0002   nop     PC++
-x0003   pvg     enter privileged mode (can directly modify SPRs)
+x0003   pvg     enter (or exit) privileged mode (can directly modify SPRs)
 x0004
 x0005
 x0006

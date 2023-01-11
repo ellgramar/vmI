@@ -1,3 +1,8 @@
+16 bit computer
+memoryspace is 268435455 shorts long or 0xfffffff or a 28-bit address
+Interrupt vector table is just a series of 8 28-bit (32 masked) addresses
+with corresponding flags in the Flag-Register
+
 Register 1 opcodes (r1):
 -   x0xxx designates to jump to the second level of opcodes
 -   llb and swp are used to set a register to any value in range 0-65535
@@ -6,4 +11,4 @@ Register 1 opcodes (r1):
         respectivly. 
 
 
-
+-   pvg needs its own opcode set
