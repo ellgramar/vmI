@@ -1,5 +1,5 @@
 16 bit computer
-memoryspace is 268435455 shorts long or 0xfffffff or a 28-bit address
+memoryspace is 268,435,455 shorts long or 0xfffffff or a 28-bit address space
 Interrupt vector table is 
 16 GPRs: r0-r15
 8 SPRs: s0-s7
@@ -18,8 +18,8 @@ instr = r1r1 r2r2 r3r3 r4r4
 triple register instructions
 x0          Escape to double register instruction set A
 x1  llb     Load Low Byte of instruction into register specified in second nibble
-x2  lod     LOaD indirect to reg[nibble2] from address (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
-x3  str     SToRe indirect from reg[nibble2] to address (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
+x2  lod     LOaD indirect to reg[nibble2] from address (((reg[nibble3] & 0x0fff) << 16) + reg[n4])
+x3  str     SToRe indirect from reg[nibble2] to address (((reg[nibble3] & 0x0fff) << 16) + reg[n4])
 x4  rdj     Reletive Direct Jump: +/- 2047 address locations
 x5  add     reg[r2] = reg[r3] + reg[r4]
 x6  sub     reg[r2] = reg[r3] - reg[r4]
@@ -34,7 +34,7 @@ xe
 xf  double register instruction set B
 
 double register instruction set A
-x00         Escape to nibble3 opcodes
+x00 Escape to nibble3 opcodes
 x01 jmp     indirect JuMP to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
 x02 beq     Branch if EQual (z = 1) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])
 x03 bge     Branch if Greater than or Equal (n = 0) to (((reg[nibble3] & 0x0fff) << 16) + reg[n2])

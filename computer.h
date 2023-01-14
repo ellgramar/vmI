@@ -9,11 +9,19 @@
 typedef struct computer{
     uint16_t *mem;
     uint16_t *gpr;
-    uint32_t *spr;
     uint32_t *ivt;
+    uint32_t pc;
+    uint32_t sp;
+    uint32_t fp;
+    uint32_t lr;
+    uint32_t cr;
+    uint32_t tr;
+    uint32_t er;
+    uint32_t fr;
+
 } computer;
 
-enum spr{
+enum Spr{
     PC = 0,
     SP = 1,
     FP = 2,
