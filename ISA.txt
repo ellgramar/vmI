@@ -12,7 +12,7 @@ s5  TR  Target Register, target number for Counter
 s6  ER  Extension Register
         xxxx e0e0 e0e0 e0e0 e1e1 e1e1 e1e1
 s7  FR  Flag Register
-        znct s012 3456 7xxx xsss ssss ssss
+        zcnt s012 3456 7xxx xsss ssss ssss
 
 instr = r1r1 r2r2 r3r3 r4r4
 triple register instructions
@@ -82,10 +82,10 @@ x008    ror     Rotate Right
 x009    srr     signed rotate right
 x00a    psh     push reg[nibble4] to address in SP and dec SP
 x00b    pop     pop mem[SP] to reg[nibble4] and inc SP
-x00c    tot     Terminal OuT, ascii(reg[r4]) to position in s7 specified by S, 12th bit of s7 = 1
+x00c    wto     Write Terminal Out, ascii(reg[r4]) to position in s7 specified by S, 12th bit of s7 = 1
 x00d    rti     Read Terminal In, reg[r4] = char, lower 11 bits of s7 are position, 12th bit of s7 = 0
-x00e    not     invert reg[nibble3] = ~reg[nibble4]
-x00f    ien     interrupt enable 
+x00e    ien     interrupt enable
+x00f    not     invert reg[nibble3] = ~reg[nibble4]
 
 
 
